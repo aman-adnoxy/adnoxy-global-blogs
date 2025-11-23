@@ -1,0 +1,9 @@
+# Robots.txt for Adnoxy Blog
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://www.adnoxyglobal.com/sitemap.xml
+
+# Crawl-delay
+Crawl-delay: 1
