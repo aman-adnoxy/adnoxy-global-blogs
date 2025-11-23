@@ -208,7 +208,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ posts, isLoading, onNa
                 </button>
               )}
               <button 
-                onClick={onNavigateToAllBlogs}
+                onClick={() => onNavigateToAllBlogs()}
                 className="px-8 py-3 bg-gray-900 text-white rounded-full text-sm font-bold hover:bg-gray-800 transition-all shadow-lg"
               >
                 View All Articles ({filteredPosts.length})
