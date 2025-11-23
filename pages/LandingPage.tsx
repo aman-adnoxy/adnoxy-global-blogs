@@ -9,7 +9,7 @@ interface LandingPageProps {
   posts: BlogPost[];
   isLoading: boolean;
   onNavigateToPost: (post: BlogPost) => void;
-  onNavigateToAllBlogs: () => void;
+  onNavigateToAllBlogs: (searchQuery?: string) => void;
 }
 
 const ITEMS_PER_PAGE = 6;
@@ -18,6 +18,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ posts, isLoading, onNa
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [visibleCount, setVisibleCount] = useState(ITEMS_PER_PAGE);
+
+  // Handle search submit
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      onNavigateToAllBlogs(searchQuery);
+    }
+  };
 
   // Extract unique categories from posts dynamically
   const categories = useMemo(() => {
@@ -47,15 +55,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ posts, isLoading, onNa
     };
   }, [posts]);
 
-  // Top Picks: Latest 3 posts from selected category
-  const topPicks = useMemo(() => {
-    const categoryPosts = selectedCategory === 'All' 
-      ? posts 
-      : posts.filter((post: BlogPost) => post.category === selectedCategory);
-    
-    return categoryPosts.slice(0, 3);
-  }, [posts, selectedCategory]);
-
   // Filter logic for search and remaining posts
   const filteredPosts = useMemo(() => {
     return posts.filter((post: BlogPost) => {
@@ -66,6 +65,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ posts, isLoading, onNa
       return matchesCategory && matchesSearch;
     });
   }, [posts, selectedCategory, searchQuery]);
+
+  // Top Picks: Latest 3 posts from filtered results (category + search)
+  const topPicks = useMemo(() => {
+    return filteredPosts.slice(0, 3);
+  }, [filteredPosts]);
 
   // More Articles: All filtered posts (can include duplicates from featured/top picks)
   const displayPosts = filteredPosts.slice(0, visibleCount);
@@ -107,17 +111,35 @@ export const LandingPage: React.FC<LandingPageProps> = ({ posts, isLoading, onNa
         </p>
 
         {/* Search Bar */}
-        <div className="max-w-md mx-auto relative mb-12">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Search className="h-5 w-5 text-gray-400" />
+        <div className="max-w-2xl mx-auto mb-12">
+          <div className="flex gap-3 items-center">
+            <form onSubmit={handleSearchSubmit} className="flex-1 relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Search className="h-5 w-5 text-gray-400" />
+              </div>
+              <input
+                type="text"
+                className="block w-full pl-10 pr-24 py-3 border border-gray-200 rounded-xl leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-black focus:border-transparent sm:text-sm shadow-sm transition-shadow"
+                placeholder="Search for Blogs..."
+                value={searchQuery}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
+              />
+              <button
+                type="submit"
+                className="absolute inset-y-0 right-0 pr-3 flex items-center"
+              >
+                <span className="bg-gray-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">
+                  Search
+                </span>
+              </button>
+            </form>
+            <button
+              onClick={() => onNavigateToAllBlogs()}
+              className="px-6 py-3 bg-white border-2 border-gray-900 text-gray-900 rounded-xl text-sm font-medium hover:bg-gray-900 hover:text-white transition-all whitespace-nowrap"
+            >
+              View All
+            </button>
           </div>
-          <input
-            type="text"
-            className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-black focus:border-transparent sm:text-sm shadow-sm transition-shadow"
-            placeholder="Search for Blogs..."
-            value={searchQuery}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
-          />
         </div>
 
         {/* Category Filters */}

@@ -98,9 +98,14 @@ const App: React.FC = () => {
     window.scrollTo(0, 0);
   };
 
-  const handleNavigateToAllBlogs = () => {
-    const newUrl = `${window.location.pathname}?view=all`;
-    window.history.pushState({ view: 'all' }, '', newUrl);
+  const handleNavigateToAllBlogs = (searchQuery?: string) => {
+    const params = new URLSearchParams();
+    params.set('view', 'all');
+    if (searchQuery) {
+      params.set('search', searchQuery);
+    }
+    const newUrl = `${window.location.pathname}?${params.toString()}`;
+    window.history.pushState({ view: 'all', search: searchQuery }, '', newUrl);
     setCurrentView('all-blogs');
     setSelectedPost(null);
     window.scrollTo(0, 0);

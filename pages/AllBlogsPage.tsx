@@ -17,6 +17,15 @@ export const AllBlogsPage: React.FC<AllBlogsPageProps> = ({ posts, onNavigateToP
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
+  // Read search query from URL on mount
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const urlSearch = params.get('search');
+    if (urlSearch) {
+      setSearchQuery(urlSearch);
+    }
+  }, []);
+
   // Extract unique categories from posts dynamically
   const categories = useMemo(() => {
     const uniqueCategories = new Set<string>();
