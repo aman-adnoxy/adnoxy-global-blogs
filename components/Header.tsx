@@ -47,28 +47,17 @@ export const Header: React.FC<HeaderProps> = ({ onNavigateHome }) => {
             </a>
           </nav>
 
-          {/* Mobile Navigation */}
-          <div className="md:hidden flex items-center space-x-4">
+          {/* CTA Button - Show on all screens */}
+          <div className="block">
             <a 
               href="https://www.adnoxy.com" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-gray-700 hover:text-gray-900 transition-colors"
+              className="inline-flex items-center gap-1.5 md:gap-2 bg-gray-900 text-white px-3 py-2 md:px-6 md:py-2.5 rounded-lg text-sm md:text-base font-semibold hover:bg-gray-800 transition-all shadow-md"
             >
-              <ExternalLink size={20} />
-            </a>
-          </div>
-
-          {/* CTA Button */}
-          <div className="hidden md:block">
-            <a 
-              href="https://www.adnoxy.com" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-gray-900 text-white px-6 py-2.5 rounded-lg font-semibold hover:bg-gray-800 transition-all shadow-md"
-            >
-              Get Started
-              <ExternalLink size={16} />
+              <span className="hidden sm:inline">Get Started</span>
+              <span className="sm:hidden">Visit</span>
+              <ExternalLink size={14} className="md:w-4 md:h-4" />
             </a>
           </div>
         </div>

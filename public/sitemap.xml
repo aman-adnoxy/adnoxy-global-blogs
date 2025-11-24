@@ -1,73 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-  
-  <!-- Homepage -->
-  <url>
-    <loc>https://www.adnoxyglobal.com</loc>
-    <lastmod>2025-11-23</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-
-  <!-- All Blogs Page -->
-  <url>
-    <loc>https://www.adnoxyglobal.com?view=all</loc>
-    <lastmod>2025-11-23</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- Blog Posts -->
-  <url>
-    <loc>https://www.adnoxyglobal.com?post=creative-billboard-designs-that-captivate-audiences</loc>
-    <lastmod>2025-11-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://bcgdakzytmeiheoinwhs.supabase.co/storage/v1/object/public/blog-images/creative-billboard-designs-that-captivate-audiences.png</image:loc>
-      <image:title>Beyond the Gaze: Crafting Billboard Designs That Truly Captivate</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://www.adnoxyglobal.com?post=how-to-convert-clicks-to-billboard-contracts</loc>
-    <lastmod>2025-11-22</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://bcgdakzytmeiheoinwhs.supabase.co/storage/v1/object/public/blog-images/how-to-convert-clicks-to-billboard-contracts.png</image:loc>
-      <image:title>From Clicks to Contracts: Mastering Digital Lead Conversion for Billboard Deals</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://www.adnoxyglobal.com?post=innovative-digital-billboard-technologies</loc>
-    <lastmod>2025-11-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://bcgdakzytmeiheoinwhs.supabase.co/storage/v1/object/public/blog-images/innovative-digital-billboard-technologies.png</image:loc>
-      <image:title>Beyond the Static: Unveiling Innovative Digital Billboard Technologies</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://www.adnoxyglobal.com?post=measuring-success-in-out-of-home-campaigns</loc>
-    <lastmod>2025-11-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://bcgdakzytmeiheoinwhs.supabase.co/storage/v1/object/public/blog-images/measuring-success-in-out-of-home-campaigns.png</image:loc>
-      <image:title>Beyond Impressions: Accurately Measuring Success in Out-of-Home Campaigns</image:title>
-    </image:image>
-  </url>
-  <url>
-    <loc>https://www.adnoxyglobal.com?post=the-role-of-a-measurement-commissioner-in-ooh</loc>
-    <lastmod>2025-11-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://bcgdakzytmeiheoinwhs.supabase.co/storage/v1/object/public/blog-images/the-role-of-a-measurement-commissioner-in-ooh.png</image:loc>
-      <image:title>The Unsung Hero: Why Every OOH Campaign Needs a Measurement Commissioner</image:title>
-    </image:image>
-  </url>
-
-</urlset>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://www.adnoxyglobal.com/sitemap-static.xml</loc>
+    <lastmod>2024-01-01</lastmod>
+  </sitemap>
+  <sitemap>
+    <loc>https://www.adnoxyglobal.com/sitemap-dynamic.xml</loc>
+    <lastmod>2024-11-24</lastmod>
+  </sitemap>
+</sitemapindex>

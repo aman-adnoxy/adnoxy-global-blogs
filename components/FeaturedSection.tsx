@@ -10,12 +10,12 @@ interface FeaturedSectionProps {
 
 export const FeaturedSection: React.FC<FeaturedSectionProps> = ({ mainPost, sidePosts, onPostClick }) => {
   return (
-    <section className="py-20 bg-gray-50/50 rounded-[3rem] my-12 px-4 sm:px-8 md:px-12">
+    <section className="py-12 md:py-20 bg-gray-50/50 rounded-3xl md:rounded-[3rem] my-8 md:my-12 px-4 sm:px-8 md:px-12">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col sm:flex-row justify-between items-end mb-12">
-            <div className="text-center sm:text-left">
-                <p className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Featured Blogs</p>
-                <h2 className="font-heading text-3xl md:text-4xl font-bold text-gray-900">Dive into Our Top Blogs</h2>
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-8 md:mb-12">
+            <div className="text-center w-full">
+                <p className="text-xs md:text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">Featured Blogs</p>
+                <h2 className="font-heading text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">Dive into Our Top Blogs</h2>
             </div>
         </div>
         
