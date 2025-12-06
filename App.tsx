@@ -7,8 +7,6 @@ import { AllBlogsPage } from './pages/AllBlogsPage';
 import { ScrollToTop } from './components/ScrollToTop';
 import { BlogPost } from './types';
 import { BlogService } from './services/blogService';
-import { generateDynamicSitemapXml } from './utils/sitemapGenerator';
-import { initServiceWorker, storeSupabaseConfig } from './utils/serviceWorkerManager';
 
 type ViewType = 'home' | 'post' | 'all-blogs';
 
@@ -18,12 +16,6 @@ const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<ViewType>('home');
   const [loading, setLoading] = useState(true);
 
-  // Initialize Service Worker for dynamic sitemap
-  useEffect(() => {
-    initServiceWorker();
-    storeSupabaseConfig();
-  }, []);
-
   // Initial Data Fetch
   useEffect(() => {
     const fetchPosts = async () => {
@@ -31,26 +23,6 @@ const App: React.FC = () => {
       const data = await BlogService.getAllPosts();
       setPosts(data);
       setLoading(false);
-      
-      // Check if sitemap needs regeneration
-      if (data.length > 0) {
-        try {
-          const cachedCount = localStorage.getItem('sitemap-post-count');
-          const currentCount = data.length.toString();
-          
-          if (cachedCount !== currentCount) {
-            // Clear sitemap cache to force regeneration
-            if ('caches' in window) {
-              caches.delete('sitemap-cache-v1').then(() => {
-                console.log('✅ Sitemap cache cleared, will regenerate on next request');
-              });
-            }
-            localStorage.setItem('sitemap-post-count', currentCount);
-          }
-        } catch (error) {
-          console.error('Error checking sitemap:', error);
-        }
-      }
     };
 
     fetchPosts();
@@ -76,37 +48,6 @@ const App: React.FC = () => {
     } else {
       setSelectedPost(null);
       setCurrentView('home');
-    }
-  }, [loading, posts]);
-
-  // Make sitemap utilities available globally
-  useEffect(() => {
-    if (!loading && posts.length > 0) {
-      // Download current sitemap
-      (window as any).downloadDynamicSitemap = () => {
-        const dynamicSitemapXml = generateDynamicSitemapXml(posts);
-        const blob = new Blob([dynamicSitemapXml], { type: 'application/xml;charset=utf-8' });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'sitemap-dynamic.xml';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-        console.log('📥 Dynamic sitemap downloaded');
-      };
-      
-      // Test sitemap endpoint
-      (window as any).testSitemap = async () => {
-        try {
-          const response = await fetch('/sitemap-dynamic.xml');
-          const text = await response.text();
-          console.log('Sitemap response:', text);
-        } catch (error) {
-          console.error('Error fetching sitemap:', error);
-        }
-      };
     }
   }, [loading, posts]);
 
