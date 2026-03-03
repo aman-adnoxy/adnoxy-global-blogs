@@ -40,6 +40,9 @@ A modern, SEO-optimized blog platform built with React, TypeScript, and Vite. Fe
    ```env
    VITE_SUPABASE_URL=your_supabase_url
    VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+   VITE_R2_ACCOUNT_ID=your_cloudflare_r2_account_id
+   VITE_R2_ACCESS_KEY_ID=your_cloudflare_r2_access_key
+   VITE_R2_SECRET_ACCESS_KEY=your_cloudflare_r2_secret_key
    ```
 
 4. **Start development server**
@@ -165,6 +168,9 @@ See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed instructions.
 ```env
 VITE_SUPABASE_URL=your_production_supabase_url
 VITE_SUPABASE_ANON_KEY=your_production_supabase_key
+VITE_R2_ACCOUNT_ID=your_production_cloudflare_r2_account_id
+VITE_R2_ACCESS_KEY_ID=your_production_cloudflare_r2_access_key
+VITE_R2_SECRET_ACCESS_KEY=your_production_cloudflare_r2_secret_key
 ```
 
 ## 🔍 SEO Features
