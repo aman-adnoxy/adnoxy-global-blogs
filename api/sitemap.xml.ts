@@ -1,44 +1,58 @@
-import { createClient } from '@supabase/supabase-js';
+import { S3Client, ListObjectsV2Command, GetObjectCommand } from '@aws-sdk/client-s3';
 
-const supabaseUrl = process.env.VITE_SUPABASE_URL || 'https://bcgdakzytmeiheoinwhs.supabase.co';
-const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJjZ2Rha3p5dG1laWhlb2lud2hzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg2OTIxMjYsImV4cCI6MjA2NDI2ODEyNn0.d6icINgXF8sNCDinGtr069iYggMpGm4nb0S2A-GdQ9U';
+const accountId = process.env.VITE_R2_ACCOUNT_ID;
+const accessKeyId = process.env.VITE_R2_ACCESS_KEY_ID;
+const secretAccessKey = process.env.VITE_R2_SECRET_ACCESS_KEY;
 
 export default async function handler(req: any, res: any) {
   try {
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    const s3 = new S3Client({
+      region: 'auto',
+      endpoint: `https://${accountId}.r2.cloudflarestorage.com`,
+      credentials: {
+        accessKeyId: accessKeyId || '',
+        secretAccessKey: secretAccessKey || '',
+      },
+    });
     
     // List all markdown files
-    const { data: files, error } = await supabase.storage
-      .from('blog-markdown')
-      .list();
-
-    if (error) throw error;
+    const listCommand = new ListObjectsV2Command({
+      Bucket: 'blog-markdown',
+    });
+    const { Contents } = await s3.send(listCommand);
+    const files = Contents || [];
 
     const posts = [];
     
     // Fetch each markdown file to extract metadata
-    for (const file of files.filter(f => f.name.endsWith('.md'))) {
-      const { data, error: downloadError } = await supabase.storage
-        .from('blog-markdown')
-        .download(file.name);
-
-      if (!downloadError && data) {
-        const text = await data.text();
-        const slug = file.name.replace('.md', '');
-        
-        // Extract frontmatter
-        const titleMatch = text.match(/title:\s*['"]([^'"]+)['"]/);
-        const dateMatch = text.match(/publishedAt:\s*['"]([^'"]+)['"]/);
-        const updatedMatch = text.match(/updatedAt:\s*['"]([^'"]+)['"]/);
-        const coverImageMatch = text.match(/coverImage:\s*['"]([^'"]+)['"]/);
-        
-        posts.push({
-          slug,
-          title: titleMatch?.[1] || slug,
-          publishedAt: dateMatch?.[1] || new Date().toISOString(),
-          updatedAt: updatedMatch?.[1],
-          coverImage: coverImageMatch?.[1]
-        });
+    for (const file of files.filter(f => f.Key && f.Key.endsWith('.md'))) {
+      const getCommand = new GetObjectCommand({
+        Bucket: 'blog-markdown',
+        Key: file.Key!,
+      });
+      
+      try {
+        const response = await s3.send(getCommand);
+        if (response.Body) {
+          const text = await response.Body.transformToString();
+          const slug = file.Key!.replace('.md', '');
+          
+          // Extract frontmatter
+          const titleMatch = text.match(/title:\s*['"]([^'"]+)['"]/);
+          const dateMatch = text.match(/publishedAt:\s*['"]([^'"]+)['"]/);
+          const updatedMatch = text.match(/updatedAt:\s*['"]([^'"]+)['"]/);
+          const coverImageMatch = text.match(/coverImage:\s*['"]([^'"]+)['"]/);
+          
+          posts.push({
+            slug,
+            title: titleMatch?.[1] || slug,
+            publishedAt: dateMatch?.[1] || new Date().toISOString(),
+            updatedAt: updatedMatch?.[1],
+            coverImage: coverImageMatch?.[1]
+          });
+        }
+      } catch (downloadError) {
+        console.error(`Error downloading ${file.Key}:`, downloadError);
       }
     }
 
